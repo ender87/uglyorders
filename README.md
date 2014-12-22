@@ -9,7 +9,7 @@ with a grain of salt.
 
 According to documentation you received, OMS is tasked with generating orders based on selected item and associated customer.
 In the process it also calculates the tax due and sends it to the tax office system - the accurateness of this information
-if vital for the company to be in compliance with tax regulations. Generated orders are queued (FIFO) in order of creation
+is vital for the company to be in compliance with tax regulations. Generated orders are queued (FIFO) in order of creation
 (priority orders are exception - these will always be fetched immediately). Separate system will later fetch subsequent
 orders for further processing. During this processing `process()` method of class `Order` will be called;
 within this method important interactions with `SeriousEnterpriseEventBus` happen.
