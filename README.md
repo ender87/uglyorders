@@ -23,7 +23,8 @@ Traditionally these types were mutually exclusive but due to new business needs 
 have e.g. discounted priority order, discounter international order etc.
 2. **Important!** Adhere to boy scout rule. Please refactor to improve quality and maintainability of OMS codebase.
 3. Fix any obvious bug you find.
-
+4. The codebase you get is a GIT repository - so please use it as you would normally do and remember that GIT log is
+part of the solution in that case.
 
 ## Do not modify specific interfaces/classes:
 
