@@ -1,13 +1,13 @@
 package com.getbase.recruit;
 
+import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import com.getbase.recruit.orders.DiscountedOrder;
 import com.getbase.recruit.orders.InternationalOrder;
 import com.getbase.recruit.orders.Order;
 import com.getbase.recruit.orders.PriorityOrder;
-
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 public class OrdersManagementSystemImpl implements OrdersManagementSystem {
 
@@ -16,8 +16,9 @@ public class OrdersManagementSystemImpl implements OrdersManagementSystem {
     private final ItemsRepository itemsRepository;
 
 
-    private Set<Order> ordersQueue=new HashSet<Order>();
+    private Set<Order> ordersQueue=new LinkedHashSet<Order>();
     private Order newOrder=null;
+    private Order nextOrder=null;
 
     public OrdersManagementSystemImpl(TaxOfficeAdapter taxOfficeAdapter, ItemsRepository itemsRepository) {
         this.taxOfficeAdapter = taxOfficeAdapter;
@@ -31,7 +32,7 @@ public class OrdersManagementSystemImpl implements OrdersManagementSystem {
         BigDecimal itemPrice = itemsRepository.fetchItemPrice(itemId);
 
         //create and queue order
-        OrderFlag flag=flags[0];
+        OrderFlag flag=flags[0]; // first flag only
         switch (flag) {
             case STANDARD: newOrder=new Order(itemId,customerId,itemPrice); break;
             case PRIORITY: newOrder=new PriorityOrder(itemId,customerId,itemPrice); break;
@@ -41,18 +42,22 @@ public class OrdersManagementSystemImpl implements OrdersManagementSystem {
 
         ordersQueue.add(newOrder);
 
-        //JIRA-18883 Fix priority orders not always being fetched first
+        //Priority orders are always fetched immediately (shifted to queue's beginning)
         if (OrderFlag.PRIORITY.equals(flag)) {
-            while (fetchNextOrder()!=newOrder) {
-                ordersQueue.remove(newOrder);
-                newOrder=new PriorityOrder(itemId,customerId,itemPrice);
+            while (!fetchNextOrder().equals(newOrder)) {
+            	nextOrder = fetchNextOrder();
+                ordersQueue.remove(nextOrder);
                 ordersQueue.add(newOrder);
+                ordersQueue.add(nextOrder);
             }
-            ordersQueue.add(newOrder);
         }
 
         //send tax due amount
         taxOfficeAdapter.registerTax(newOrder.getTax());
+    }
+    
+    public Set<Order> getOrdersQueue(){
+    	return ordersQueue;
     }
 
     @Override
