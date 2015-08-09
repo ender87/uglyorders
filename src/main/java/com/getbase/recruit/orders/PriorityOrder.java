@@ -5,8 +5,11 @@ import com.getbase.recruit.SeriousEnterpriseEventBusLookup;
 import com.getbase.recruit.TaxCalculationsHelper;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class PriorityOrder extends Order {
+	
+	private BigDecimal newPrice;
 
     public PriorityOrder(int itemId, int customerId, BigDecimal price) {
         super(itemId, customerId, price);
@@ -25,6 +28,12 @@ public class PriorityOrder extends Order {
     @Override
     public BigDecimal getPrice() {
         //adding priority order fee - 1.5%
-        return TaxCalculationsHelper.addPercentage(super.getPrice(),new BigDecimal("1.5"));
+    	this.newPrice = TaxCalculationsHelper.addPercentage(super.getPrice(),new BigDecimal("1.5"));
+        return this.newPrice.setScale(2, RoundingMode.UP);
+    }
+    
+    @Override
+    public BigDecimal getTotalAmount() {
+        return this.newPrice.add(getTax()).setScale(2, RoundingMode.UP);
     }
 }

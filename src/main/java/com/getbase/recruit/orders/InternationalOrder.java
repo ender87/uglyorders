@@ -5,6 +5,7 @@ import com.getbase.recruit.SeriousEnterpriseEventBusLookup;
 import com.getbase.recruit.TaxCalculationsHelper;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 //TODO will have more taxes calculated
 public class InternationalOrder extends Order {
@@ -15,7 +16,7 @@ public class InternationalOrder extends Order {
 
     public BigDecimal getTax() {
         //calculating international tax - 15.0%
-        return TaxCalculationsHelper.getPercentagePart(getPrice(), new BigDecimal("15.0"));
+        return TaxCalculationsHelper.getPercentagePart(getPrice(), new BigDecimal("15.0")).setScale(2, RoundingMode.UP);
     }
 
     public void process() {

@@ -5,6 +5,7 @@ import com.getbase.recruit.SeriousEnterpriseEventBusLookup;
 import com.getbase.recruit.TaxCalculationsHelper;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 
 public class Order {
@@ -32,7 +33,7 @@ public class Order {
     }
 
     public BigDecimal getTotalAmount() {
-        return price.add(getTax());
+        return price.add(getTax()).setScale(2, RoundingMode.UP);
     }
 
     public int getItemId() {
@@ -44,12 +45,12 @@ public class Order {
     }
 
     public BigDecimal getPrice() {
-        return price;
+        return price.setScale(2, RoundingMode.UP);
     }
 
     public BigDecimal getTax() {
         //calculating standard tax - 23.5%
-        return TaxCalculationsHelper.getPercentagePart(getPrice(), new BigDecimal("23.5"));
+        return TaxCalculationsHelper.getPercentagePart(getPrice(), new BigDecimal("23.5")).setScale(2, RoundingMode.UP);
     }
 
     @Override

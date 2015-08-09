@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 
 public class TaxCalculationsHelper {
 
-    private final static int CURRENCY_SCALE=2;
+    private final static int CURRENCY_SCALE=6;
     private final static MathContext mathContext=new MathContext(CURRENCY_SCALE, RoundingMode.UP);
 
     public static BigDecimal addPercentage(BigDecimal base, BigDecimal percentage) {
