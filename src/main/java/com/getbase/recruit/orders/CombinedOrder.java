@@ -1,5 +1,6 @@
 /**
- * 
+ * 2015-08-10
+ * @author ender
  */
 package com.getbase.recruit.orders;
 
@@ -12,16 +13,15 @@ import com.getbase.recruit.OrderFlag;
 import com.getbase.recruit.TaxCalculationsHelper;
 
 /**
- * @author ender
- *
+ * Order's child class. Contains methods for handling combined orders with types:
+ * discounted priority,
+ * discounted international,
+ * priority international and
+ * discounted priority international.
+ * Order type is recognized on the basis of given com.getbase.recruit.OrderFlag array.
  */
 public class CombinedOrder extends Order {
 
-	/**
-	 * @param itemId
-	 * @param customerId
-	 * @param price
-	 */
 	private List<OrderFlag> flags;
 	private BigDecimal newPrice;
 
@@ -30,10 +30,12 @@ public class CombinedOrder extends Order {
 		this.flags = Arrays.asList(flags);
 	}
 
+	@Override
 	public void process() {
 		super.process();
 	}
 
+	@Override
 	public BigDecimal getTax() {
 		if (flags.contains(OrderFlag.INTERNATIONAL))
 			return TaxCalculationsHelper.getPercentagePart(getPrice(), new BigDecimal("15.0")).setScale(2,

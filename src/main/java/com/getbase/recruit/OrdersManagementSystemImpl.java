@@ -26,6 +26,7 @@ public class OrdersManagementSystemImpl implements OrdersManagementSystem {
 		this.itemsRepository = itemsRepository;
 	}
 
+	@Override
 	public void createOrder(int itemId, int customerId, OrderFlag... flags) {
 
 		// fetch price and calculate discount and taxes
@@ -34,8 +35,8 @@ public class OrdersManagementSystemImpl implements OrdersManagementSystem {
 		// create and queue order
 		if (flags.length > 1)
 			newOrder = new CombinedOrder(itemId, customerId, itemPrice, flags);
-		else {
-			OrderFlag flag = flags[0]; // first flag only
+		else { // usual order
+			OrderFlag flag = flags[0];
 			switch (flag) {
 			case STANDARD:
 				newOrder = new Order(itemId, customerId, itemPrice);
@@ -73,6 +74,7 @@ public class OrdersManagementSystemImpl implements OrdersManagementSystem {
 		return ordersQueue;
 	}
 
+	@Override
 	public Order fetchNextOrder() {
 		return ordersQueue.iterator().next();
 	}
