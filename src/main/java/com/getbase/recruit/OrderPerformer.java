@@ -20,8 +20,11 @@ public class OrderPerformer {
 		oms.createOrder(1, 2, OrderFlag.PRIORITY);
 		oms.createOrder(2, 55, OrderFlag.DISCOUNTED);
 		
-//		oms.createOrder(1, 2, OrderFlag.INTERNATIONAL,
-//				OrderFlag.PRIORITY);
+//		all combined orders cases
+		oms.createOrder(1, 66, OrderFlag.INTERNATIONAL, OrderFlag.PRIORITY);
+		oms.createOrder(1, 66, OrderFlag.INTERNATIONAL, OrderFlag.DISCOUNTED);
+		oms.createOrder(1, 66, OrderFlag.PRIORITY, OrderFlag.DISCOUNTED);
+		oms.createOrder(1, 66, OrderFlag.PRIORITY, OrderFlag.DISCOUNTED, OrderFlag.INTERNATIONAL);
 		
 		for (Order o : oms.getOrdersQueue())
 			System.out.println("item: " + o.getItemId() +

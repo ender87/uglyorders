@@ -4,6 +4,9 @@
 package com.getbase.recruit.orders;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.List;
 
 import com.getbase.recruit.OrderFlag;
 import com.getbase.recruit.TaxCalculationsHelper;
@@ -19,23 +22,40 @@ public class CombinedOrder extends Order {
 	 * @param customerId
 	 * @param price
 	 */
-	public CombinedOrder(int itemId, int customerId, BigDecimal price,
-			OrderFlag[] flags) {
+	private List<OrderFlag> flags;
+	private BigDecimal newPrice;
+
+	public CombinedOrder(int itemId, int customerId, BigDecimal price, OrderFlag[] flags) {
 		super(itemId, customerId, price);
+		this.flags = Arrays.asList(flags);
 	}
-	
-	public void process(){
+
+	public void process() {
 		super.process();
 	}
-	
-	public BigDecimal getTax(){
-		return null;
-		
+
+	public BigDecimal getTax() {
+		if (flags.contains(OrderFlag.INTERNATIONAL))
+			return TaxCalculationsHelper.getPercentagePart(getPrice(), new BigDecimal("15.0")).setScale(2,
+					RoundingMode.UP);
+		else
+			return super.getTax();
 	}
-	
+
 	@Override
-	public BigDecimal getPrice(){
-		return TaxCalculationsHelper.addPercentage(super.getPrice(),new BigDecimal("1.5"));
+	public BigDecimal getPrice() {
+		this.newPrice = super.getPrice();
+		if (this.flags.contains(OrderFlag.PRIORITY))
+			this.newPrice = TaxCalculationsHelper.addPercentage(newPrice, new BigDecimal("1.5"));
+		if (this.flags.contains(OrderFlag.DISCOUNTED))
+			this.newPrice = TaxCalculationsHelper.subtractPercentage(newPrice, new BigDecimal("11"));
+
+		return this.newPrice.setScale(2, RoundingMode.UP);
+	}
+
+	@Override
+	public BigDecimal getTotalAmount() {
+		return this.newPrice.add(getTax()).setScale(2, RoundingMode.UP);
 	}
 
 }

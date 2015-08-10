@@ -8,7 +8,7 @@ public class ItemsRepoImpl implements ItemsRepository {
 	
 	public ItemsRepoImpl(){
 		this.prices = new BigDecimal[]{BigDecimal.valueOf(1008768.28),
-				BigDecimal.valueOf(25.5),
+				BigDecimal.valueOf(100),
 				BigDecimal.valueOf(150.00)};
 	}
 
