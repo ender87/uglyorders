@@ -26,7 +26,7 @@ public class OrdersManagementSystemImpl implements OrdersManagementSystem {
 		this.itemsRepository = itemsRepository;
 	}
 
-	@Override
+//	@Override
 	public void createOrder(int itemId, int customerId, OrderFlag... flags) {
 
 		// fetch price and calculate discount and taxes
@@ -74,7 +74,7 @@ public class OrdersManagementSystemImpl implements OrdersManagementSystem {
 		return ordersQueue;
 	}
 
-	@Override
+//	@Override
 	public Order fetchNextOrder() {
 		return ordersQueue.iterator().next();
 	}

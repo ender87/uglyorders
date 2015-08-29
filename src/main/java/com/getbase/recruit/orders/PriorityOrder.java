@@ -30,11 +30,11 @@ public class PriorityOrder extends Order {
 	public BigDecimal getPrice() {
 		// adding priority order fee - 1.5%
 		this.newPrice = TaxCalculationsHelper.addPercentage(super.getPrice(), new BigDecimal("1.5"));
-		return this.newPrice.setScale(2, RoundingMode.UP);
+		return this.newPrice; //.setScale(2, RoundingMode.UP);
 	}
 
 	@Override
 	public BigDecimal getTotalAmount() {
-		return this.newPrice.add(getTax()).setScale(2, RoundingMode.UP);
+		return this.newPrice.add(getTax()); //.setScale(2, RoundingMode.UP);
 	}
 }

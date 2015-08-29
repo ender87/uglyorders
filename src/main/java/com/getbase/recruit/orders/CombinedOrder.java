@@ -52,12 +52,12 @@ public class CombinedOrder extends Order {
 		if (this.flags.contains(OrderFlag.DISCOUNTED))
 			this.newPrice = TaxCalculationsHelper.subtractPercentage(newPrice, new BigDecimal("11"));
 
-		return this.newPrice.setScale(2, RoundingMode.UP);
+		return this.newPrice; //.setScale(2, RoundingMode.UP);
 	}
 
 	@Override
 	public BigDecimal getTotalAmount() {
-		return this.newPrice.add(getTax()).setScale(2, RoundingMode.UP);
+		return this.newPrice ;//.add(getTax()).setScale(2, RoundingMode.UP);
 	}
 
 }
