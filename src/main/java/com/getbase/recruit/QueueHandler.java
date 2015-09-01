@@ -144,7 +144,7 @@ class Kolejka {
    
     /* menu */
    public static void menu(){
-       System.out.println("(0) MENU\n(1) ADD\n(2) DELETE\n(3) SHOW");
-        System.out.println("(4) ZLICZ\n(5) COPY\n(6) SCAL\n(7) EXIT");
+       System.out.println("(1) ADD\n(2) DELETE\n(3) SHOW");
+        System.out.println("(4) ZLICZ\n");
    }
 }
